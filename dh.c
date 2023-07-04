@@ -1,63 +1,34 @@
-#include<stdio.h>
-#include<stdlib.h>
-#include<math.h>
-long long int root(long long int p,long long int k,long long int a[])
-{
-   long long int i,s,h;
-   for(i=1;i<p;i++)
-   {
-    h=pow(k,i);
-    s=h%p;
-    a[s-1]=s;
-   }
-  for(i=0;i<p-2;i++)
-  {
-   if(a[i]==0)
-   return 0;
-  }
-  return 1;
-}
-
-long long int prime(long long int p)
-{
-  long long int c=0,i;
-  for(i=2;i<p;i++)
-  {
-   if(p%i==0)
-   c++;
-  }
- return c;
-}
-
-void main()
-{
-  long long int p;
-  printf("enter prime number\n");
-  scanf("%lld",&p);
-  long long int ch=prime(p);
-  while(ch>0)
-  ch=prime(++p);
-  printf("\nprime number is %lld\n",p);
-  long long int ar[p-1],i;
-  for(i=0;i<p-2;i++)
-  ar[i]=0;
-  long long int k=2,k1,k2;
-  long long int c=root(p,k,ar);
-  while(c==0)
-  {
-   c=root(p,++k,ar);
-  }
- 
-  printf("prime number and primitive root are %lld %lld\n",p,k);
-  printf("enter public key 1 \n");
-  scanf("%lld",&k1);
-  printf("enter public key 2 \n");
-  scanf("%lld",&k2);
-  long long int a,b,A,B;
-  a=fmod(pow(k,k1),p);
-  b=fmod(pow(k,k2),p);
-  printf("private keys are %lld %lld\n",a,b);
-  A=fmod(pow(b,k1),p);
-  B=fmod(pow(a,k2),p);
-  printf("shared values are %lld %lld\n",A,B);
+#include<stdio.h> 
+#include<conio.h> 
+long long int power(int a, int b, int mod)
+{ 
+long long int t; 
+if(b==1) 
+   return a; 
+t=power(a,b/2,mod); 
+if(b%2==0) 
+ return (t*t)%mod; 
+else 
+ return (((t*t)%mod)*a)%mod; 
+} 
+long int calculateKey(int a, int x, int n) 
+{ 
+ return power(a,x,n); 
+} 
+void main() 
+{ 
+int n,g,x,a,y,b; 
+printf("Enter the value of n and g : "); 
+scanf("%d%d",&n,&g); 
+printf("Enter the value of x for the first person : "); 
+scanf("%d",&x); 
+a=power(g,x,n);
+printf("Enter the value of y for the second person : "); 
+scanf("%d",&y); 
+b=power(g,y,n); 
+printf("public key of x :%d",a);
+printf("\npublic key of y: %d",b);
+printf("\nkey for the first person is : %lld\n", power(b,x,n)); 
+printf("key for the second person is : %lld\n", power(a,y,n)); 
+getch(); 
 }
